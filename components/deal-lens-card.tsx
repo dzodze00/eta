@@ -891,13 +891,16 @@ export function DealLensCard({
                     </li>
                   </ul>
                 </div>
+
                 <div className="flex justify-between items-center p-4 bg-gray-50 rounded-md">
                   <div>
                     <p className="font-semibold">Premium Access</p>
-                    <p className="text-sm text-gray-600">One-time payment</p>
+                    <p className="text-sm text-gray-600">Lifetime access (one-time payment)</p>
+                    <p className="text-xs text-green-600 mt-1">$75k savings vs alternatives</p>
                   </div>
-                  <p className="font-bold text-lg">$99</p>
+                  <p className="font-bold text-lg">$3,500</p>
                 </div>
+
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">Purchase Access</Button>
               </div>
             </DialogContent>
