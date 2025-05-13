@@ -59,12 +59,40 @@ function DialogTrigger({ children, asChild, ...props }: { children: React.ReactN
 
 function DialogContent({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const { open, setOpen } = React.useContext(DialogContext)
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false)
+      }
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener("keydown", handleEscape)
+      document.addEventListener("mousedown", handleClickOutside)
+      document.body.style.overflow = "hidden"
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape)
+      document.removeEventListener("mousedown", handleClickOutside)
+      document.body.style.overflow = ""
+    }
+  }, [open, setOpen])
 
   if (!open) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div
+        ref={ref}
         className={cn(
           "relative max-h-[90vh] w-full max-w-md overflow-auto rounded-lg bg-white p-6 shadow-lg",
           className,
