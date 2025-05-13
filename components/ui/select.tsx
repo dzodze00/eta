@@ -46,7 +46,19 @@ Select.displayName = "Select"
 interface SelectContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(({ className, children, ...props }, ref) => {
-  return null // This is just a placeholder to prevent errors, as we're using native select
+  // This is a simplified version that will work with the native select
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "absolute z-50 min-w-[8rem] overflow-hidden rounded-md border border-gray-200 bg-white text-gray-950 shadow-md animate-in fade-in-80",
+        className,
+      )}
+      {...props}
+    >
+      <div className="p-1">{children}</div>
+    </div>
+  )
 })
 SelectContent.displayName = "SelectContent"
 
