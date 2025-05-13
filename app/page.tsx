@@ -16,7 +16,7 @@ export default function LandingPage() {
               Log in
             </Link>
             <Link href="/onboarding">
-              <Button className="bg-purple-600 hover:bg-purple-700">Get Started</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700 text-white">Get Started</Button>
             </Link>
           </div>
         </div>
