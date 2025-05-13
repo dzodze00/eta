@@ -862,44 +862,46 @@ Consultant, Consulting Firm (2007-2011)"
                       the perfect business match.
                     </p>
 
-                    <div>
-                      <Label htmlFor="revenueRange">Target Business Revenue Range</Label>
-                      <Select
-                        onValueChange={(value) => handleSelectChange("revenueRange", value)}
-                        defaultValue={formData.revenueRange}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select revenue range" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="under-1m">Under $1M</SelectItem>
-                          <SelectItem value="1m-5m">$1M - $5M</SelectItem>
-                          <SelectItem value="5m-10m">$5M - $10M</SelectItem>
-                          <SelectItem value="10m-25m">$10M - $25M</SelectItem>
-                          <SelectItem value="25m-50m">$25M - $50M</SelectItem>
-                          <SelectItem value="over-50m">Over $50M</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="revenueRange">Target Business Revenue Range</Label>
+                        <Select
+                          onValueChange={(value) => handleSelectChange("revenueRange", value)}
+                          defaultValue={formData.revenueRange}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select revenue range" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="under-1m">Under $1M</SelectItem>
+                            <SelectItem value="1m-5m">$1M - $5M</SelectItem>
+                            <SelectItem value="5m-10m">$5M - $10M</SelectItem>
+                            <SelectItem value="10m-25m">$10M - $25M</SelectItem>
+                            <SelectItem value="25m-50m">$25M - $50M</SelectItem>
+                            <SelectItem value="over-50m">Over $50M</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                    <div>
-                      <Label htmlFor="acquisitionTimeline">When Do You Plan to Acquire?</Label>
-                      <Select
-                        onValueChange={(value) => handleSelectChange("acquisitionTimeline", value)}
-                        defaultValue={formData.acquisitionTimeline}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select timeline" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-6-months">Within 6 months</SelectItem>
-                          <SelectItem value="6-12-months">6-12 months</SelectItem>
-                          <SelectItem value="1-2-years">1-2 years</SelectItem>
-                          <SelectItem value="2-3-years">2-3 years</SelectItem>
-                          <SelectItem value="3-plus-years">3+ years</SelectItem>
-                          <SelectItem value="just-exploring">Just exploring</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div>
+                        <Label htmlFor="acquisitionTimeline">When Do You Plan to Acquire?</Label>
+                        <Select
+                          onValueChange={(value) => handleSelectChange("acquisitionTimeline", value)}
+                          defaultValue={formData.acquisitionTimeline}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select timeline" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="0-6-months">Within 6 months</SelectItem>
+                            <SelectItem value="6-12-months">6-12 months</SelectItem>
+                            <SelectItem value="1-2-years">1-2 years</SelectItem>
+                            <SelectItem value="2-3-years">2-3 years</SelectItem>
+                            <SelectItem value="3-plus-years">3+ years</SelectItem>
+                            <SelectItem value="just-exploring">Just exploring</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
                     <div>
