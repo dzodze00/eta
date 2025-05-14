@@ -27,9 +27,10 @@ export default function LandingPage() {
         <section className="py-12 md:py-16 bg-gradient-to-b from-purple-50 to-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold mb-3">
                 Democratizing <span className="text-purple-600">Entrepreneurship</span> Through Acquisition
               </h1>
+              <p className="text-2xl font-semibold text-gray-800 mb-6">Buy a business like buying a stock.</p>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Discover off-market businesses with personal connections to owners, succession clues, and SBA
                 qualification insights.
