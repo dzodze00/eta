@@ -16,6 +16,7 @@ import {
   Plus,
   Trash2,
   CheckCircle,
+  ChevronDown,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -75,7 +76,9 @@ export default function OnboardingPage() {
     additionalInfo: "",
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -122,6 +125,21 @@ export default function OnboardingPage() {
   }
 
   const nextStep = () => {
+    // Validate current step before proceeding
+    const currentErrors = validateStep(step)
+
+    if (Object.keys(currentErrors).length > 0) {
+      setErrors(currentErrors)
+      // Scroll to the first error
+      const firstErrorField = document.getElementById(Object.keys(currentErrors)[0])
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+      return
+    }
+
+    // Clear errors and proceed to next step
+    setErrors({})
     window.scrollTo(0, 0)
     setStep((prev) => prev + 1)
   }
@@ -133,7 +151,59 @@ export default function OnboardingPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate current step before submission
+    const currentErrors = validateStep(step)
+
+    if (Object.keys(currentErrors).length > 0) {
+      setErrors(currentErrors)
+      // Scroll to the first error
+      const firstErrorField = document.getElementById(Object.keys(currentErrors)[0])
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+      return
+    }
+
+    // Proceed with submission
     router.push("/search-criteria")
+  }
+
+  const validateStep = (currentStep: number): Record<string, string> => {
+    const stepErrors: Record<string, string> = {}
+
+    if (currentStep === 1) {
+      // Basic Information validation
+      if (!formData.firstName.trim()) stepErrors.firstName = "First name is required"
+      if (!formData.lastName.trim()) stepErrors.lastName = "Last name is required"
+      if (!formData.email.trim()) stepErrors.email = "Email is required"
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) stepErrors.email = "Email is invalid"
+      if (!formData.currentLocation.trim()) stepErrors.currentLocation = "Current location is required"
+    } else if (currentStep === 2) {
+      // Education validation
+      // We'll just validate that if schools are added, they have required fields
+      formData.schools.forEach((school, index) => {
+        if (school.name.trim() && !school.degree.trim()) stepErrors[`school-degree-${index}`] = "Degree is required"
+        if (school.name.trim() && !school.fieldOfStudy.trim())
+          stepErrors[`school-field-${index}`] = "Field of study is required"
+      })
+    } else if (currentStep === 3) {
+      // Professional Background validation
+      // Optional fields, no strict validation needed
+    } else if (currentStep === 4) {
+      // Personal Interests validation
+      // Optional fields, no strict validation needed
+    } else if (currentStep === 5) {
+      // Business Preferences validation
+      if (!formData.investmentRange) stepErrors.investmentRange = "Investment range is required"
+      if (!formData.timeframe) stepErrors.timeframe = "Acquisition timeframe is required"
+    } else if (currentStep === 6) {
+      // Additional Information validation
+      if (!formData.revenueRange) stepErrors.revenueRange = "Revenue range is required"
+      if (!formData.acquisitionTimeline) stepErrors.acquisitionTimeline = "Acquisition timeline is required"
+    }
+
+    return stepErrors
   }
 
   const totalSteps = 6
@@ -177,13 +247,26 @@ export default function OnboardingPage() {
                       <User className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Basic Information</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Let's start with the essentials so we can personalize your experience.
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="firstName">First Name*</Label>
+                        <Label htmlFor="firstName" className="flex items-center">
+                          First Name*
+                          {errors.firstName && <span className="ml-2 text-xs text-red-500">{errors.firstName}</span>}
+                        </Label>
                         <Input
                           id="firstName"
                           name="firstName"
@@ -191,11 +274,15 @@ export default function OnboardingPage() {
                           onChange={handleChange}
                           placeholder="John"
                           required
+                          className={errors.firstName ? "border-red-500 focus:ring-red-500" : ""}
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="lastName">Last Name*</Label>
+                        <Label htmlFor="lastName" className="flex items-center">
+                          Last Name*
+                          {errors.lastName && <span className="ml-2 text-xs text-red-500">{errors.lastName}</span>}
+                        </Label>
                         <Input
                           id="lastName"
                           name="lastName"
@@ -203,13 +290,17 @@ export default function OnboardingPage() {
                           onChange={handleChange}
                           placeholder="Doe"
                           required
+                          className={errors.lastName ? "border-red-500 focus:ring-red-500" : ""}
                         />
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="email">Email Address*</Label>
+                        <Label htmlFor="email" className="flex items-center">
+                          Email Address*
+                          {errors.email && <span className="ml-2 text-xs text-red-500">{errors.email}</span>}
+                        </Label>
                         <Input
                           id="email"
                           name="email"
@@ -218,6 +309,7 @@ export default function OnboardingPage() {
                           onChange={handleChange}
                           placeholder="john@example.com"
                           required
+                          className={errors.email ? "border-red-500 focus:ring-red-500" : ""}
                         />
                       </div>
 
@@ -235,7 +327,12 @@ export default function OnboardingPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor="currentLocation">Current Location*</Label>
+                      <Label htmlFor="currentLocation" className="flex items-center">
+                        Current Location*
+                        {errors.currentLocation && (
+                          <span className="ml-2 text-xs text-red-500">{errors.currentLocation}</span>
+                        )}
+                      </Label>
                       <Input
                         id="currentLocation"
                         name="currentLocation"
@@ -243,6 +340,7 @@ export default function OnboardingPage() {
                         onChange={handleChange}
                         placeholder="City, State"
                         required
+                        className={errors.currentLocation ? "border-red-500 focus:ring-red-500" : ""}
                       />
                     </div>
 
@@ -268,6 +366,16 @@ export default function OnboardingPage() {
                       <BookOpen className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Education</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Your educational background can help us find meaningful connections with business owners.
                     </p>
@@ -329,21 +437,41 @@ export default function OnboardingPage() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                      <Label htmlFor={`degree-${index}`}>Degree</Label>
+                                      <Label htmlFor={`degree-${index}`} className="flex items-center">
+                                        Degree
+                                        {errors[`school-degree-${index}`] && (
+                                          <span className="ml-2 text-xs text-red-500">
+                                            {errors[`school-degree-${index}`]}
+                                          </span>
+                                        )}
+                                      </Label>
                                       <Input
                                         id={`degree-${index}`}
                                         value={school.degree}
                                         onChange={(e) => updateSchool(index, "degree", e.target.value)}
                                         placeholder="MBA, BS, etc."
+                                        className={
+                                          errors[`school-degree-${index}`] ? "border-red-500 focus:ring-red-500" : ""
+                                        }
                                       />
                                     </div>
                                     <div>
-                                      <Label htmlFor={`field-${index}`}>Field of Study</Label>
+                                      <Label htmlFor={`field-${index}`} className="flex items-center">
+                                        Field of Study
+                                        {errors[`school-field-${index}`] && (
+                                          <span className="ml-2 text-xs text-red-500">
+                                            {errors[`school-field-${index}`]}
+                                          </span>
+                                        )}
+                                      </Label>
                                       <Input
                                         id={`field-${index}`}
                                         value={school.fieldOfStudy}
                                         onChange={(e) => updateSchool(index, "fieldOfStudy", e.target.value)}
                                         placeholder="Business, Engineering, etc."
+                                        className={
+                                          errors[`school-field-${index}`] ? "border-red-500 focus:ring-red-500" : ""
+                                        }
                                       />
                                     </div>
                                   </div>
@@ -421,6 +549,16 @@ export default function OnboardingPage() {
                       <Briefcase className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Professional Background</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Tell us about your work experience to help find businesses with potential connections.
                     </p>
@@ -536,6 +674,16 @@ Consultant, Consulting Firm (2007-2011)"
                       <Heart className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Personal Interests & Hobbies</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Shared interests can create strong connections with business owners. Tell us about your hobbies
                       and activities.
@@ -719,6 +867,16 @@ Consultant, Consulting Firm (2007-2011)"
                       <Building className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Business Preferences</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Help us understand what you're looking for in a business acquisition.
                     </p>
@@ -811,10 +969,17 @@ Consultant, Consulting Firm (2007-2011)"
                     </div>
 
                     <div>
-                      <Label htmlFor="investmentRange">Investment Range</Label>
+                      <Label htmlFor="investmentRange" className="flex items-center">
+                        Investment Range*
+                        {errors.investmentRange && (
+                          <span className="ml-2 text-xs text-red-500">{errors.investmentRange}</span>
+                        )}
+                      </Label>
                       <Select
+                        id="investmentRange"
                         onValueChange={(value) => handleSelectChange("investmentRange", value)}
                         defaultValue={formData.investmentRange}
+                        className={errors.investmentRange ? "border-red-500 focus:ring-red-500" : ""}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select investment range" />
@@ -831,10 +996,15 @@ Consultant, Consulting Firm (2007-2011)"
                     </div>
 
                     <div>
-                      <Label htmlFor="timeframe">Acquisition Timeframe</Label>
+                      <Label htmlFor="timeframe" className="flex items-center">
+                        Acquisition Timeframe*
+                        {errors.timeframe && <span className="ml-2 text-xs text-red-500">{errors.timeframe}</span>}
+                      </Label>
                       <Select
+                        id="timeframe"
                         onValueChange={(value) => handleSelectChange("timeframe", value)}
                         defaultValue={formData.timeframe}
+                        className={errors.timeframe ? "border-red-500 focus:ring-red-500" : ""}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select timeframe" />
@@ -857,6 +1027,16 @@ Consultant, Consulting Firm (2007-2011)"
                       <Info className="h-5 w-5 text-purple-600" />
                       <h2 className="text-xl font-semibold">Additional Information</h2>
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                        <p className="font-medium">Please correct the following errors:</p>
+                        <ul className="mt-2 list-disc pl-5 space-y-1 text-sm">
+                          {Object.values(errors).map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <p className="text-gray-600 mb-6">
                       Almost done! Please review your information and add any additional details that might help us find
                       the perfect business match.
@@ -864,43 +1044,69 @@ Consultant, Consulting Firm (2007-2011)"
 
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="revenueRange">Target Business Revenue Range</Label>
-                        <Select
-                          onValueChange={(value) => handleSelectChange("revenueRange", value)}
-                          defaultValue={formData.revenueRange}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select revenue range" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="under-1m">Under $1M</SelectItem>
-                            <SelectItem value="1m-5m">$1M - $5M</SelectItem>
-                            <SelectItem value="5m-10m">$5M - $10M</SelectItem>
-                            <SelectItem value="10m-25m">$10M - $25M</SelectItem>
-                            <SelectItem value="25m-50m">$25M - $50M</SelectItem>
-                            <SelectItem value="over-50m">Over $50M</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label htmlFor="revenueRange" className="flex items-center">
+                          Target Business Revenue Range*
+                          {errors.revenueRange && (
+                            <span className="ml-2 text-xs text-red-500">{errors.revenueRange}</span>
+                          )}
+                        </Label>
+                        <div className="relative">
+                          <select
+                            id="revenueRange"
+                            name="revenueRange"
+                            value={formData.revenueRange}
+                            onChange={handleChange}
+                            className={`flex h-10 w-full appearance-none rounded-md border ${
+                              errors.revenueRange ? "border-red-500" : "border-purple-300"
+                            } bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 ${
+                              errors.revenueRange ? "focus:ring-red-500" : "focus:ring-purple-600"
+                            } focus:border-purple-600 disabled:cursor-not-allowed disabled:opacity-50`}
+                          >
+                            <option value="" disabled>
+                              Select revenue range
+                            </option>
+                            <option value="under-1m">Under $1M</option>
+                            <option value="1m-5m">$1M - $5M</option>
+                            <option value="5m-10m">$5M - $10M</option>
+                            <option value="10m-25m">$10M - $25M</option>
+                            <option value="25m-50m">$25M - $50M</option>
+                            <option value="over-50m">Over $50M</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                        </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="acquisitionTimeline">When Do You Plan to Acquire?</Label>
-                        <Select
-                          onValueChange={(value) => handleSelectChange("acquisitionTimeline", value)}
-                          defaultValue={formData.acquisitionTimeline}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select timeline" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="0-6-months">Within 6 months</SelectItem>
-                            <SelectItem value="6-12-months">6-12 months</SelectItem>
-                            <SelectItem value="1-2-years">1-2 years</SelectItem>
-                            <SelectItem value="2-3-years">2-3 years</SelectItem>
-                            <SelectItem value="3-plus-years">3+ years</SelectItem>
-                            <SelectItem value="just-exploring">Just exploring</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label htmlFor="acquisitionTimeline" className="flex items-center">
+                          When Do You Plan to Acquire?*
+                          {errors.acquisitionTimeline && (
+                            <span className="ml-2 text-xs text-red-500">{errors.acquisitionTimeline}</span>
+                          )}
+                        </Label>
+                        <div className="relative">
+                          <select
+                            id="acquisitionTimeline"
+                            name="acquisitionTimeline"
+                            value={formData.acquisitionTimeline}
+                            onChange={handleChange}
+                            className={`flex h-10 w-full appearance-none rounded-md border ${
+                              errors.acquisitionTimeline ? "border-red-500" : "border-purple-300"
+                            } bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 ${
+                              errors.acquisitionTimeline ? "focus:ring-red-500" : "focus:ring-purple-600"
+                            } focus:border-purple-600 disabled:cursor-not-allowed disabled:opacity-50`}
+                          >
+                            <option value="" disabled>
+                              Select timeline
+                            </option>
+                            <option value="0-6-months">Within 6 months</option>
+                            <option value="6-12-months">6-12 months</option>
+                            <option value="1-2-years">1-2 years</option>
+                            <option value="2-3-years">2-3 years</option>
+                            <option value="3-plus-years">3+ years</option>
+                            <option value="just-exploring">Just exploring</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                        </div>
                       </div>
                     </div>
 
