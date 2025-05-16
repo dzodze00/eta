@@ -874,7 +874,7 @@ export function DealLensCard({
             <DialogTrigger asChild>
               <Button className="bg-purple-600 hover:bg-purple-700">Unlock Details</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>Unlock Business Details</DialogTitle>
                 <DialogDescription>
@@ -905,16 +905,81 @@ export function DealLensCard({
                   </ul>
                 </div>
 
-                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-md">
-                  <div>
-                    <p className="font-semibold">Premium Access</p>
-                    <p className="text-sm text-gray-600">Lifetime access (one-time payment)</p>
-                    <p className="text-xs text-green-600 mt-1">$75k savings vs alternatives</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border rounded-md p-4 bg-gray-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">💼 Starter</h3>
+                      <span className="font-bold text-lg">
+                        $500<span className="text-sm font-normal text-gray-600">/month</span>
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">For: Solo searchers or side-hustle buyers</p>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                        <span className="text-sm">Unlimited search & filtering across all listings</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                        <span className="text-sm">Save up to 25 businesses to your personalized deal flow</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                        <span className="text-sm">Export up to 10 businesses/month to CSV</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                        <span className="text-sm">Weekly curated drop of new opportunities</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                        <span className="text-sm">Early access to future tools</span>
+                      </li>
+                    </ul>
+                    <Button className="w-full mt-4 bg-purple-600 hover:bg-purple-700">Get Started</Button>
                   </div>
-                  <p className="font-bold text-lg">$3,500</p>
+
+                  <div className="border rounded-md p-4 border-purple-200 bg-purple-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">🚀 Pro</h3>
+                      <span className="font-bold text-lg">
+                        $1,000<span className="text-sm font-normal text-gray-600">/month</span>
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">For: Active acquirers and small acquisition teams</p>
+                    <p className="text-sm font-medium mb-2">Everything in Starter, plus:</p>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Save up to 200 businesses</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Export up to 50 businesses/month</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Custom email alerts for high-match businesses</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Tagging, notes, and deal stage tracking</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Beta access to advanced tools</span>
+                      </li>
+                    </ul>
+                    <Button className="w-full mt-4 bg-purple-800 hover:bg-purple-900">Upgrade to Pro</Button>
+                  </div>
                 </div>
 
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">Purchase Access</Button>
+                <div className="text-center text-sm text-gray-500 mt-2">
+                  Need a custom plan for your team?{" "}
+                  <a href="#" className="text-purple-600 hover:underline">
+                    Contact us
+                  </a>
+                </div>
               </div>
             </DialogContent>
           </Dialog>
