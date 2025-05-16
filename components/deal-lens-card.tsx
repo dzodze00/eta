@@ -1,7 +1,49 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, DollarSign, Calendar, ChevronDown, ChevronUp, CheckCircle, AlertTriangle, Compass, Rocket, MessageSquare, Lock, Users, TrendingUp, Award, Clock, Building, Phone, Mail, ExternalLink, Briefcase, User, Handshake, GraduationCap, Globe, Home, BarChart4, Map, Landmark, Scale, Percent, TrendingDown, Lightbulb, Layers, Leaf, Truck, Zap, Star, StarOff, FileText, Share2, FileSpreadsheet } from 'lucide-react'
+import {
+  MapPin,
+  DollarSign,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle,
+  AlertTriangle,
+  Compass,
+  Rocket,
+  MessageSquare,
+  Lock,
+  Users,
+  TrendingUp,
+  Award,
+  Clock,
+  Building,
+  Phone,
+  Mail,
+  ExternalLink,
+  Briefcase,
+  User,
+  Handshake,
+  GraduationCap,
+  Globe,
+  Home,
+  BarChart4,
+  Map,
+  Landmark,
+  Scale,
+  Percent,
+  TrendingDown,
+  Lightbulb,
+  Layers,
+  Leaf,
+  Truck,
+  Zap,
+  Star,
+  StarOff,
+  FileText,
+  Share2,
+  FileSpreadsheet,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -63,6 +105,17 @@ export function DealLensCard({
   // Calculate succession readiness score based on clues
   const successionScore = Math.min(100, successionClues.length * 20)
 
+  // Icons for affiliations
+  const affiliationIcons = [
+    <GraduationCap className="h-5 w-5 text-purple-600 mt-0.5" key="education" />,
+    <Handshake className="h-5 w-5 text-purple-600 mt-0.5" key="business" />,
+    <Globe className="h-5 w-5 text-purple-600 mt-0.5" key="location" />,
+    <Home className="h-5 w-5 text-purple-600 mt-0.5" key="hometown" />,
+  ]
+
+  // Extract state from location
+  const state = location || "Florida"
+
   // Owner information
   const ownerInfo = {
     name: "John Smith",
@@ -107,52 +160,6 @@ export function DealLensCard({
       duration: 3000,
     })
   }
-
-  // Simplified affiliations rendering
-  const renderAffiliations = () => {
-    try {
-      if (!affiliations || !Array.isArray(affiliations) || affiliations.length === 0) {
-        return (
-          <div className="p-3 bg-gray-50 rounded-md text-center">
-            <p className="text-sm text-gray-600">No affiliations found with this owner.</p>
-          </div>
-        );
-      }
-
-      return (
-        <div className="space-y-3">
-          {affiliations.map((affiliation, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 p-3 bg-white border border-purple-100 rounded-md shadow-sm"
-            >
-              {index === 0 && <GraduationCap className="h-5 w-5 text-purple-600 mt-0.5" />}
-              {index === 1 && <Handshake className="h-5 w-5 text-purple-600 mt-0.5" />}
-              {index === 2 && <Globe className="h-5 w-5 text-purple-600 mt-0.5" />}
-              {index >= 3 && <Home className="h-5 w-5 text-purple-600 mt-0.5" />}
-              <div>
-                <p className="text-sm">{affiliation}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {index === 0
-                    ? "Strong affiliation - mention early in outreach"
-                    : index === 1
-                      ? "Medium strength - good supporting point"
-                      : "Helpful connection - can be mentioned in follow-ups"}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    } catch (error) {
-      console.error("Error rendering affiliations:", error);
-      return (
-        <div className="p-3 bg-gray-50 rounded-md text-center">
-          <p className="text-sm text-gray-600">Unable to display affiliations.</p>
-        </div>
-      );
-    }
-  };
 
   return (
     <Card className="overflow-hidden shadow-md border-purple-100 transition-all duration-300 hover:shadow-lg">
@@ -407,7 +414,6 @@ export function DealLensCard({
             )}
           </TabsContent>
 
-          {/* Completely simplified affiliations tab */}
           <TabsContent value="affiliations" className="p-4">
             <div className="space-y-4">
               <div className="bg-purple-50 p-3 rounded-md">
@@ -420,7 +426,32 @@ export function DealLensCard({
 
               <div>
                 <h4 className="font-semibold text-sm mb-2">Your Affiliations with This Owner</h4>
-                {renderAffiliations()}
+                <div className="space-y-3">
+                  {Array.isArray(affiliations) && affiliations.length > 0 ? (
+                    affiliations.map((affiliation, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-3 bg-white border border-purple-100 rounded-md shadow-sm"
+                      >
+                        {index < affiliationIcons.length && affiliationIcons[index]}
+                        <div>
+                          <p className="text-sm">{affiliation}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {index === 0
+                              ? "Strong affiliation - mention early in outreach"
+                              : index === 1
+                                ? "Medium strength - good supporting point"
+                                : "Helpful connection - can be mentioned in follow-ups"}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 bg-gray-50 rounded-md text-center">
+                      <p className="text-sm text-gray-600">No affiliations found with this owner.</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="bg-white border border-purple-100 rounded-md p-3">
@@ -893,3 +924,51 @@ export function DealLensCard({
                   </div>
 
                   <div className="border rounded-md p-4 border-purple-200 bg-purple-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">🚀 Pro</h3>
+                      <span className="font-bold text-lg">
+                        $1,000<span className="text-sm font-normal text-gray-600">/month</span>
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">For: Active acquirers and small acquisition teams</p>
+                    <p className="text-sm font-medium mb-2">Everything in Starter, plus:</p>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Save up to 200 businesses</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Export up to 50 businesses/month</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Custom email alerts for high-match businesses</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Tagging, notes, and deal stage tracking</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                        <span className="text-sm">Beta access to advanced tools</span>
+                      </li>
+                    </ul>
+                    <Button className="w-full mt-4 bg-purple-800 hover:bg-purple-900">Upgrade to Pro</Button>
+                  </div>
+                </div>
+
+                <div className="text-center text-sm text-gray-500 mt-2">
+                  Need a custom plan for your team?{" "}
+                  <a href="#" className="text-purple-600 hover:underline">
+                    Contact us
+                  </a>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
