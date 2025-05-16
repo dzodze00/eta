@@ -18,6 +18,7 @@ import {
   Mail,
   FileText,
   Video,
+  CreditCard,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -86,6 +87,12 @@ export default function DashboardPage() {
                 <DropdownMenuItem>
                   <User className="mr-2 h-4 w-4" />
                   Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/pricing">
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    <span>Pricing</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link href="/saved-businesses" className="flex items-center w-full">
