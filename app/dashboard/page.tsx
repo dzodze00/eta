@@ -88,8 +88,10 @@ export default function DashboardPage() {
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Star className="mr-2 h-4 w-4" />
-                  Saved Businesses
+                  <Link href="/saved-businesses" className="flex items-center w-full">
+                    <Star className="mr-2 h-4 w-4" />
+                    Saved Businesses
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
@@ -124,7 +126,11 @@ export default function DashboardPage() {
             <div className="flex justify-between items-center mb-6">
               <TabsList>
                 <TabsTrigger value="search">Search Results</TabsTrigger>
-                <TabsTrigger value="saved">Saved Businesses</TabsTrigger>
+                <TabsTrigger value="saved">
+                  <Link href="/saved-businesses" className="flex items-center">
+                    Saved Businesses
+                  </Link>
+                </TabsTrigger>
                 <TabsTrigger value="coming-soon">Coming Soon</TabsTrigger>
               </TabsList>
 
