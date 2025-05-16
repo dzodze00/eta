@@ -17,6 +17,7 @@ import {
   Trash2,
   CheckCircle,
   ChevronDown,
+  LightbulbIcon,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -71,6 +72,9 @@ export default function OnboardingPage() {
     timeframe: "",
     revenueRange: "", // New field
     acquisitionTimeline: "", // New field
+
+    // Thesis
+    thesis: "", // New field for acquisition thesis
 
     // Additional Information
     additionalInfo: "",
@@ -197,6 +201,7 @@ export default function OnboardingPage() {
       // Business Preferences validation
       if (!formData.investmentRange) stepErrors.investmentRange = "Investment range is required"
       if (!formData.timeframe) stepErrors.timeframe = "Acquisition timeframe is required"
+      if (!formData.thesis.trim()) stepErrors.thesis = "Acquisition thesis is required"
     } else if (currentStep === 6) {
       // Additional Information validation
       if (!formData.revenueRange) stepErrors.revenueRange = "Revenue range is required"
@@ -890,6 +895,32 @@ Consultant, Consulting Firm (2007-2011)"
                         onChange={handleChange}
                         placeholder="I'm interested in manufacturing businesses with $500K-$2M in EBITDA, preferably in the Midwest. Looking for an owner who wants to transition over 6-12 months."
                         rows={4}
+                      />
+                    </div>
+
+                    {/* New Thesis Field */}
+                    <div>
+                      <Label htmlFor="thesis" className="flex items-center">
+                        Acquisition Thesis*
+                        {errors.thesis && <span className="ml-2 text-xs text-red-500">{errors.thesis}</span>}
+                      </Label>
+                      <div className="bg-purple-50 p-3 rounded-md mb-2">
+                        <div className="flex items-start gap-2">
+                          <LightbulbIcon className="h-5 w-5 text-purple-600 mt-0.5" />
+                          <p className="text-sm text-purple-700">
+                            Your acquisition thesis is your investment strategy and approach. Describe your unique
+                            perspective on what makes a good acquisition target and how you plan to create value.
+                          </p>
+                        </div>
+                      </div>
+                      <Textarea
+                        id="thesis"
+                        name="thesis"
+                        value={formData.thesis}
+                        onChange={handleChange}
+                        placeholder="My thesis is to acquire a business with strong customer relationships but outdated technology. I plan to implement modern systems to improve efficiency while maintaining the company's reputation for quality service."
+                        rows={5}
+                        className={errors.thesis ? "border-red-500 focus:ring-red-500" : ""}
                       />
                     </div>
 
