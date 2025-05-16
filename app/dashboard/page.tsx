@@ -292,6 +292,49 @@ export default function DashboardPage() {
                   ]}
                   sbaQualification="Strong SBA 7(a) candidate with excellent cash flow coverage ratio"
                 />
+                <DealLensCard
+                  title="Manufacturing Equipment Company"
+                  location="Tampa, Florida"
+                  ebitda="$520K"
+                  sdeMultiple="3.5-4.2x"
+                  established="2002"
+                  highlights={[
+                    "Established manufacturing business with 20+ year history",
+                    "Diverse customer base across multiple industries",
+                    "Proprietary product line with recurring revenue",
+                    "Experienced staff willing to stay on with new ownership",
+                  ]}
+                  diligenceAreas={[
+                    "Customer concentration - top 3 customers represent 42% of revenue",
+                    "Equipment upgrades needed in next 2-3 years",
+                    "Lease renewal coming up in 18 months",
+                  ]}
+                  sectorNotes={[
+                    "Manufacturing sector in Florida growing at 3.2% annually",
+                    "Supply chain diversification creating opportunities",
+                    "Increasing demand for US-made equipment",
+                  ]}
+                  expansionPotential={[
+                    "Geographic expansion to Southeast region",
+                    "New product line for restaurant industry",
+                    "E-commerce sales channel development",
+                    "Service contract offering for recurring revenue",
+                  ]}
+                  quickTake="Solid manufacturing business with strong fundamentals and clear growth paths. Owner retiring after 20+ years. Good systems and team in place."
+                  affiliations={[
+                    "You both graduated from University of Florida Engineering",
+                    "You both are members of the Florida Manufacturers Association",
+                    "You both have connections to Tampa Bay Business Journal",
+                    "You're both from the Tampa Bay area originally",
+                  ]}
+                  successionClues={[
+                    "Owner mentioned retirement plans in industry publication",
+                    "Business listed as 'established 2002' but owner is 67 years old",
+                    "Recent leadership additions suggest succession planning",
+                    "Company exhibited at fewer trade shows this year",
+                  ]}
+                  sbaQualification="Business likely qualifies for SBA financing with 10% down payment"
+                />
               </div>
             </TabsContent>
 
