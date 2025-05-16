@@ -120,12 +120,17 @@ export default function BusinessDetailPage({ params }: { params: { id: string } 
     <div className="min-h-screen flex flex-col">
       <header className="border-b bg-white sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <Building className="h-6 w-6 text-purple-600" />
             <span className="font-bold text-xl">Kivo</span>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-4">
+            <Link href="/pricing">
+              <Button variant="ghost" size="sm">
+                Pricing
+              </Button>
+            </Link>
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" className="flex items-center gap-1">
                 <ArrowLeft className="h-4 w-4" />
