@@ -94,7 +94,7 @@ export function DealLensCard({
   sectorNotes,
   expansionPotential,
   quickTake,
-  affiliations,
+  affiliations = [], // Provide default empty array to prevent errors
   successionClues,
   sbaQualification,
 }: DealLensCardProps) {
@@ -427,24 +427,30 @@ export function DealLensCard({
               <div>
                 <h4 className="font-semibold text-sm mb-2">Your Affiliations with This Owner</h4>
                 <div className="space-y-3">
-                  {affiliations.map((affiliation, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-3 p-3 bg-white border border-purple-100 rounded-md shadow-sm"
-                    >
-                      {affiliationIcons[index % affiliationIcons.length]}
-                      <div>
-                        <p className="text-sm">{affiliation}</p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {index === 0
-                            ? "Strong affiliation - mention early in outreach"
-                            : index === 1
-                              ? "Medium strength - good supporting point"
-                              : "Helpful connection - can be mentioned in follow-ups"}
-                        </p>
+                  {affiliations && affiliations.length > 0 ? (
+                    affiliations.map((affiliation, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-3 bg-white border border-purple-100 rounded-md shadow-sm"
+                      >
+                        {affiliationIcons[index % affiliationIcons.length]}
+                        <div>
+                          <p className="text-sm">{affiliation}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {index === 0
+                              ? "Strong affiliation - mention early in outreach"
+                              : index === 1
+                                ? "Medium strength - good supporting point"
+                                : "Helpful connection - can be mentioned in follow-ups"}
+                          </p>
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="p-3 bg-gray-50 rounded-md text-center">
+                      <p className="text-sm text-gray-600">No affiliations found with this owner.</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 
@@ -883,28 +889,6 @@ export function DealLensCard({
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 mt-4">
-                <div className="border rounded-md p-4">
-                  <h4 className="font-semibold mb-2">What you'll get:</h4>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
-                      <span className="text-sm">Owner contact information</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
-                      <span className="text-sm">Detailed financial statements</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
-                      <span className="text-sm">Customer concentration data</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-purple-600 mt-0.5" />
-                      <span className="text-sm">Direct messaging with owner</span>
-                    </li>
-                  </ul>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="border rounded-md p-4 bg-gray-50">
                     <div className="flex justify-between items-start mb-2">
