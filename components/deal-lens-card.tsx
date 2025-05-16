@@ -42,6 +42,7 @@ import {
   StarOff,
   FileText,
   Share2,
+  FileSpreadsheet,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -144,10 +145,18 @@ export function DealLensCard({
     })
   }
 
-  const handleGenerateReport = () => {
+  const handleExportCSV = () => {
     toast({
-      title: "Report generated",
-      description: "A detailed report for this business has been generated and downloaded.",
+      title: "Business data exported",
+      description: "Business data has been exported as CSV file.",
+      duration: 3000,
+    })
+  }
+
+  const handleExportPDF = () => {
+    toast({
+      title: "Business report generated",
+      description: "A detailed PDF report for this business has been generated and downloaded.",
       duration: 3000,
     })
   }
@@ -238,9 +247,13 @@ export function DealLensCard({
                   <Users className="h-4 w-4 mr-2" />
                   Export Contact to CRM
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleGenerateReport}>
+                <DropdownMenuItem onClick={handleExportCSV}>
+                  <FileSpreadsheet className="h-4 w-4 mr-2" />
+                  Export as CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportPDF}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Generate Report
+                  Export as PDF
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
