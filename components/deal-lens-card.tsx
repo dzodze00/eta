@@ -78,7 +78,7 @@ interface DealLensCardProps {
   sectorNotes: string[]
   expansionPotential: string[]
   quickTake: string
-  affiliations: string[]
+  affiliations?: string[]
   successionClues: string[]
   sbaQualification: string
 }
@@ -94,7 +94,7 @@ export function DealLensCard({
   sectorNotes,
   expansionPotential,
   quickTake,
-  affiliations = [], // Provide default empty array to prevent errors
+  affiliations = [],
   successionClues,
   sbaQualification,
 }: DealLensCardProps) {
@@ -427,13 +427,13 @@ export function DealLensCard({
               <div>
                 <h4 className="font-semibold text-sm mb-2">Your Affiliations with This Owner</h4>
                 <div className="space-y-3">
-                  {affiliations && affiliations.length > 0 ? (
+                  {Array.isArray(affiliations) && affiliations.length > 0 ? (
                     affiliations.map((affiliation, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-3 p-3 bg-white border border-purple-100 rounded-md shadow-sm"
                       >
-                        {affiliationIcons[index % affiliationIcons.length]}
+                        {index < affiliationIcons.length && affiliationIcons[index]}
                         <div>
                           <p className="text-sm">{affiliation}</p>
                           <p className="text-xs text-gray-500 mt-1">
